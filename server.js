@@ -3,6 +3,8 @@ import express from 'express';
 import nodemailer from 'nodemailer';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
@@ -65,3 +67,14 @@ app.use(express.static('public'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor no ar na porta ${PORT}`));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ... seu código (helmet, static, etc.)
+
+// rota que força download
+app.get('/download/cv', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'CV1', 'Lebenslauf.pdf');
+  res.download(filePath, 'Diogo-Alves-CV.pdf'); // Content-Disposition: attachment
+});
