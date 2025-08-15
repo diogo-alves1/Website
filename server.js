@@ -8,24 +8,41 @@ import { fileURLToPath } from 'url';
 
 const app = express();
 
-// segurança + parsers
+// ===== Paths absolutos (ESM) =====
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ===== Segurança + parsers =====
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// rate limit só na rota de contato
+// ===== Rate limit só na rota de contato =====
 const limiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 5 });
 app.use('/contact', limiter);
 
-// transport SMTP (Render lê do painel de Environment Variables)
+// ===== SMTP (Render lê das Environment Variables) =====
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
   secure: String(process.env.SMTP_SECURE).toLowerCase() === 'true',
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
 });
 
-// rota de contato
+// ===== Rotas =====
+// Healthcheck
+app.get('/health', (_req, res) => res.send('ok'));
+
+// Arquivos estáticos da pasta public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Forçar download do PDF
+app.get('/download/cv', (req, res) => {
+  const filePath = path.join(__dirname, 'public', 'CV1', 'Lebenslauf.pdf');
+  res.download(filePath, 'Diogo-Alves-CV.pdf');
+});
+
+// Contato
 app.post('/contact', async (req, res) => {
   try {
     const { name, email, phone, subject, message, _hp } = req.body || {};
@@ -51,7 +68,7 @@ app.post('/contact', async (req, res) => {
       to: process.env.NOTIFY_TO,
       replyTo: email,
       subject: `📬 Formulário: ${subject}`,
-      html
+      html,
     });
 
     res.status(200).json({ ok: true });
@@ -61,20 +78,6 @@ app.post('/contact', async (req, res) => {
   }
 });
 
-// healthcheck e arquivos estáticos
-app.get('/health', (_req, res) => res.send('ok'));
-app.use(express.static('public'));
-
+// ===== Start =====
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor no ar na porta ${PORT}`));
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// ... seu código (helmet, static, etc.)
-
-// rota que força download
-app.get('/download/cv', (req, res) => {
-  const filePath = path.join(__dirname, 'public', 'CV1', 'Lebenslauf.pdf');
-  res.download(filePath, 'Diogo-Alves-CV.pdf'); // Content-Disposition: attachment
-});
