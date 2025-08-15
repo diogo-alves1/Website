@@ -13,8 +13,8 @@
 </head>
 
 <body>
-    <header>
-        <a href="#" class="logo">Diogo</a>
+    <header class="active">
+        <a href="#" class="logo">Diogo.</a>
 
         <i class='bx bx-menu' id="menu-icon"></i>
 
@@ -22,21 +22,29 @@
             <a href="#" class="active">Home</a>
             <a href="#">Services</a>
             <a href="#">Resume</a>
+            <a href="#">Portfolio</a>
             <a href="#">Contact</a>
         </nav>
     </header>
-    <section class="home">
+
+    <div class="bars-box active">
+        <div class="bar" style="--i:6;"></div>
+        <div class="bar" style="--i:5;"></div>
+        <div class="bar" style="--i:4;"></div>
+        <div class="bar" style="--i:3;"></div>
+        <div class="bar" style="--i:2;"></div>
+        <div class="bar" style="--i:1;"></div>
+    </div>
+
+    <section class="home active">
         <div class="home-detail">
             <h1>Diogo Alves</h1>
-            <h2>I'm a 
-                <span style="--i:4;" data-text="Coder">Coder</span>
-                <span style="--i:3;" data-text="Youtuber">Youtuber</span>
-                <span style="--i:2;" data-text="Blogger">Blogger</span>
-                <span style="--i:1;" data-text="Designer">Designer</span>
-</h2>
+            <h2>Ich bin
+                <span style="--i:4;" data-text="Mediamatiker">Mediamatiker</span>
+                <span style="--i:3;" data-text="Informatiker">Informatiker</span>
             </h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo rem nulla sunt, dolores quo sint nobis autem magnam
-            at, cupiditate id sapiente necessitatibus, reprehenderit animi alias dolore obcaecati fugit expedita .< /p>
+            at, cupiditate id sapiente necessitatibus, reprehenderit animi alias dolore obcaecati fugit expedita.</p>
             <div class="btn-sci">
                 <a href="#" class="btn">Download CV</a>
                 <div class="sci">
@@ -253,7 +261,85 @@
         </div>
     </section>
 
-    <section class="contact active">
+    <section class="portfolio">
+        <h2 class="heading">Mein <span>Zerfifikaten</span></h2>
+        <div class="portfolio-container">
+            <div class="portfolio-box">
+                <div class="portfolio-detail active">
+                    <p class="numb">01</p>
+                    <h3>Mediamatiker Ausbildung</h3>
+                    <p>Escrever aqui.....</p>
+                    <div class="tech">
+                        <p>Web Design, Design, HTML, CorelDraw, Photoshop, Premiere Pro</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-detail">
+                    <p class="numb">02</p>
+                    <h3>Deutsch A2 Niveau</h3>
+                    <p>Escrever aqui.....</p>
+                    <div class="tech">
+                        <p>Web Design, Design, HTML, CorelDraw, Photoshop, Premiere Pro</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-detail">
+                    <p class="numb">03</p>
+                    <h3>Deutsch B1 Niveau</h3>
+                    <p>Escrever aqui.....</p>
+                    <div class="tech">
+                        <p>Web Design, Design, HTML, CorelDraw, Photoshop, Premiere Pro</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-detail">
+                    <p class="numb">04</p>
+                    <h3>Vorkurs HFTM</h3>
+                    <p>Escrever aqui.....</p>
+                    <div class="tech">
+                        <p>Web Design, Design, HTML, CorelDraw, Photoshop, Premiere Pro</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-detail">
+                    <p class="numb">05</p>
+                    <h3>Grundstudium</h3>
+                    <p>Escrever aqui.....</p>
+                    <div class="tech">
+                        <p>Web Design, Design, HTML, CorelDraw, Photoshop, Premiere Pro</p>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-box">
+                <div class="portfolio-mediamatiker">
+                    <div class="img-curriculum">
+                        <div class="img-item">
+                            <img src="images/1.jpg">
+                        </div>
+                        <div class="img-item">
+                            <img src="images/2.jpg">
+                        </div>
+                        <div class="img-item">
+                            <img src="images/3.jpg">
+                        </div>
+                        <div class="img-item">
+                            <img src="images/4.jpg">
+                        </div>
+                        <div class="img-item">
+                            <img src="images/5.jpg">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <button class="arrow-left disabled"><i class='bx bx-chevron-left'></i></button>
+                    <button class="arrow-right"><i class='bx bx-chevron-right'></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="contact">
         <div class="contact-container">
             <div class="contact-box">
                 <h2>Let's Work Together</h2>
@@ -262,40 +348,46 @@
                     <i class='bx bxs-phone' ></i>
                     <div class="detail">
                         <p> Telefon</p>
-                        <p>076 562 37 93</p>
-                    </div>
-                </div>
-                <div class="contact-detail">
-                    <i class='bx bxs-phone' ></i>
-                    <div class="detail">
-                        <p> Telefon</p>
-                        <p>076 562 37 93</p>
+                        <p>+41 76 562 37 93</p>
                     </div>
                 </div>
                 <div class="contact-detail">
                     <i class='bx bxs-envelope'></i>
                     <div class="detail">
                         <p>Email</p>
-                        <p>youremail@gmail.com</p>
+                        <p>diogoxalvez16@gmail.com</p>
                     </div>
                 </div>
                 <div class="contact-detail">
-                    <i class='bx bxs-map'></i>|
+                    <i class='bx bxs-map'></i>
                     <div class="detail">
                         <p>Address</p>
-                        <p>123 Anywhere Street, Any City</p>
+                        <p>Kannalstrasse 7, Bern</p>
                     </div>
                 </div>
             </div>
 
             <div class="contact-box">
-                <form action="">
-
+                <form id="contact-form" action="/contact" method="POST">
+                <h2 class="heading">Kontakt <span>Me!</span></h2>
+                    <div class="field-box">
+                        <input type="text" name="name" placeholder="Vor- Nachname" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="text" name="phone" placeholder="Telefonnummer" required>
+                        <input type="text" name="subject" placeholder="Email Subject" required>
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                        <!-- Honeypot anti-spam (campo escondido) -->
+                         <input type="text" name="_hp" style="display:none">
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
                 </form>
             </div>
         </div>
+
     </section>
-    
+
+
+
     <script src="script.js"></script>
 </body>
 
