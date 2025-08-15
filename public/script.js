@@ -9,50 +9,58 @@ menuIcon.addEventListener('click', () => {
   navbar.classList.toggle('active');
 });
 
-const activePage = () => {
+function animateTransition() {
   const header = document.querySelector('header');
   const barsBox = document.querySelector('.bars-box');
 
   header.classList.remove('active');
   setTimeout(() => header.classList.add('active'), 1100);
 
-  navLinks.forEach(link => link.classList.remove('active'));
-
   barsBox.classList.remove('active');
   setTimeout(() => barsBox.classList.add('active'), 1100);
 
   sections.forEach(s => s.classList.remove('active'));
-
-  menuIcon.classList.remove('bx-x');
+  menuIcon?.classList.remove('bx-x');
   navbar.classList.remove('active');
-};
-
-// nova função: ativa pela id da secção
-function showSectionById(id) {
-  const target = document.getElementById(id);
-  if (!target) return;
-  sections.forEach(s => s.classList.remove('active'));
-  target.classList.add('active');
-  navLinks.forEach(a => a.classList.toggle('active', a.dataset.target === id));
 }
 
-// cliques do menu usando data-target (não índice)
-navLinks.forEach(link => {
+function showSection(section) {
+  sections.forEach(s => s.classList.remove('active'));
+  section.classList.add('active');
+  navLinks.forEach(a => a.classList.remove('active'));
+  const index = Array.from(sections).indexOf(section);
+  if (index >= 0) {
+    navLinks[index]?.classList.add('active');
+  }
+}
+
+// cliques do menu
+navLinks.forEach((link, index) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
-    const id = link.dataset.target; // "home", "resume", ...
-    if (!id || link.classList.contains('active')) return;
 
-    activePage();
-    setTimeout(() => showSectionById(id), 1100);
+    let id = link.dataset.target || link.getAttribute('href')?.replace('#','');
+
+    let targetSection = null;
+    if (id) {
+      targetSection = document.getElementById(id);
+    }
+    // Se não tiver id, pega pela ordem do link
+    if (!targetSection) {
+      targetSection = sections[index] || null;
+    }
+    if (!targetSection || link.classList.contains('active')) return;
+
+    animateTransition();
+    setTimeout(() => showSection(targetSection), 1100);
   });
 });
 
-// clique no logo → home
-logoLink.addEventListener('click', (e) => {
+// clique no logo -> home
+logoLink?.addEventListener('click', (e) => {
   e.preventDefault();
-  if (!navLinks[0].classList.contains('active')) {
-    activePage();
-    setTimeout(() => showSectionById('home'), 1100);
-  }
+  if (!sections.length) return;
+  if (document.querySelector('header nav a.active') === navLinks[0]) return;
+  animateTransition();
+  setTimeout(() => showSection(sections[0]), 1100);
 });
