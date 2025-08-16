@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import nodemailer from 'nodemailer';
 import rateLimit from 'express-rate-limit';

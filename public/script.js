@@ -64,3 +64,36 @@ logoLink?.addEventListener('click', (e) => {
   animateTransition();
   setTimeout(() => showSection(sections[0]), 1100);
 });
+
+/* ----------------------------
+   TABS: Experience / Education / Skills / About
+   (sem data-target, só pela ORDEM dos botões)
+----------------------------- */
+const tabButtons = document.querySelectorAll(
+  '.resume-container .resume-box:first-child .resume-btn'
+);
+const tabPanels = document.querySelectorAll(
+  '.resume-container .resume-box:nth-child(2) .resume-detail'
+);
+
+function activateTabByIndex(i) {
+  tabButtons.forEach(b => b.classList.remove('active'));
+  tabPanels.forEach(p => p.classList.remove('active'));
+  if (tabButtons[i]) tabButtons[i].classList.add('active');
+  if (tabPanels[i]) tabPanels[i].classList.add('active');
+}
+
+// liga os cliques
+tabButtons.forEach((btn, i) => {
+  btn.addEventListener('click', () => activateTabByIndex(i));
+});
+
+// garante que, se por algum motivo nada estiver ativo, ativa a 1ª tab
+if (
+  tabButtons.length &&
+  tabPanels.length &&
+  !document.querySelector('.resume-btn.active') &&
+  !document.querySelector('.resume-detail.active')
+) {
+  activateTabByIndex(0);
+}
