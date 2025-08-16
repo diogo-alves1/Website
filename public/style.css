@@ -476,6 +476,10 @@ section.active {
     font-size: 1.8rem;
 }
 
+.resume-detail.about .resume-item i {
+    font-size: 2.5rem;
+}
+
 .portfolio-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
