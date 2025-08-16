@@ -9,7 +9,7 @@ const app = express();
 
 // ===== Paths absolutos (ESM) =====
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname  = path.dirname(__filename);
 
 // ===== Segurança + parsers =====
 app.use(helmet());
@@ -29,16 +29,22 @@ const transporter = nodemailer.createTransport({
 });
 
 // ===== Rotas =====
+
 // Healthcheck
 app.get('/health', (_req, res) => res.send('ok'));
 
-// Arquivos estáticos da pasta public
+// Arquivos estáticos da pasta public (HTML/CSS/JS/Imagens/PDFs)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Forçar download do PDF
+// Rota para forçar download do PDF
 app.get('/download/cv', (req, res) => {
-  const filePath = path.join(__dirname, 'public', 'CV1', 'Lebenslauf.pdf');
-  res.download(filePath, 'Diogo-Alves-CV.pdf');
+  const filePath = path.join(__dirname, 'public', 'Lebenslauf.pdf'); // <— aqui!
+  res.download(filePath, 'Diogo-Alves-CV.pdf', (err) => {
+    if (err) {
+      console.error('Erro ao enviar PDF:', err);
+      res.status(404).send('Arquivo não encontrado.');
+    }
+  });
 });
 
 // Contato
