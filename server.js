@@ -28,8 +28,6 @@ const transporter = nodemailer.createTransport({
   auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
 });
 
-// ===== Rotas =====
-
 // Healthcheck
 app.get('/health', (_req, res) => res.send('ok'));
 
@@ -41,8 +39,8 @@ app.get('/download/cv', (req, res) => {
   const filePath = path.join(__dirname, 'public', 'Lebenslauf.pdf'); // <— aqui!
   res.download(filePath, 'Diogo-Alves-CV.pdf', (err) => {
     if (err) {
-      console.error('Erro ao enviar PDF:', err);
-      res.status(404).send('Arquivo não encontrado.');
+      console.error('Fehler beim Senden der PDF:', err);
+      res.status(404).send('Datei wurde nicht gefunden.');
     }
   });
 });
@@ -54,16 +52,16 @@ app.post('/contact', async (req, res) => {
     if (_hp) return res.sendStatus(200); // honeypot
 
     if (!name || !email || !subject || !message) {
-      return res.status(400).json({ error: 'Campos obrigatórios faltando.' });
+      return res.status(400).json({ error: 'Pflichtangaben fehlen.' });
     }
 
     const html = `
-      <h2>Novo contato recebido</h2>
-      <p><b>Nome:</b> ${name}</p>
+      <h2>Neue Kontaktanfrage erhalten</h2>
+      <p><b>Name:</b> ${name}</p>
       <p><b>Email:</b> ${email}</p>
-      <p><b>Telefone:</b> ${phone || '-'}</p>
-      <p><b>Assunto:</b> ${subject}</p>
-      <p><b>Mensagem:</b></p>
+      <p><b>Telefon:</b> ${phone || '-'}</p>
+      <p><b>Betreff:</b> ${subject}</p>
+      <p><b>Nachricht:</b></p>
       <pre style="white-space:pre-wrap;">${message}</pre>
       <hr><small>Enviado pelo site</small>
     `;
@@ -72,17 +70,17 @@ app.post('/contact', async (req, res) => {
       from: `"Portfolio Site" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
       to: process.env.NOTIFY_TO,
       replyTo: email,
-      subject: `📬 Formulário: ${subject}`,
+      subject: `📬 Formular: ${subject}`,
       html,
     });
 
     res.status(200).json({ ok: true });
   } catch (err) {
     console.error('ERRO /contact:', err);
-    res.status(500).json({ error: 'Erro ao enviar e-mail.' });
+    res.status(500).json({ error: 'E-Mail konnte nicht gesendet werden'});
   }
 });
 
 // ===== Start =====
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor no ar na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));

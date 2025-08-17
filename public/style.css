@@ -607,18 +607,28 @@ section.active {
 }
 
 .resume-detail.about .resume-item p {
+    display: flex;
+    flex-direction: column;
+    margin: 0;                  /* limpa margens inconsistentes */
+    line-height: 1.25;
     color: var(--main-color);
 }
 
 .resume-detail.about .resume-item p span {
-    color: var(--white-color);
-    margin-left: 1rem;
+    display: block;             /* quebra de linha */
+    margin: .35rem 0 0 0;       /* remove a margem-left antiga */
+    color: var(--white-color);  /* valor branco */
     font-size: 1.8rem;
+    font-weight: 500;
 }
 
 .resume-detail.about .resume-item i {
+    grid-column: 1;
     font-size: 2.5rem;
+    line-height: 1;
+    margin-top: .2rem;
 }
+
 
 .portfolio-container {
     display: grid;

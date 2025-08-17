@@ -235,7 +235,7 @@ window.addEventListener('load', () => {
     // evita múltiplos submits
     btn.disabled = true;
     const original = btn.textContent;
-    btn.textContent = 'A enviar…';
+    btn.textContent = 'Wird gesendet..';
 
     try {
       // envia como application/x-www-form-urlencoded (compatível com express.urlencoded)
