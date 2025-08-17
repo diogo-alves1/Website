@@ -221,7 +221,8 @@ section.active {
 }
 
 .home-detail .btn-sci .sci {
-    margin-left: 2rem;
+    margin-left: 0;
+    margin-bottom: 2rem;
 }
 
 .home-detail .btn-sci .sci a {
@@ -601,15 +602,20 @@ section.active {
 }
 
 .resume-detail.about .resume-item {
-    height: auto;
-    padding: 0 0 .5rem;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    column-gap: 1.2rem;
+    align-items: start;
     background: transparent;
+    padding: 0 0 1.2rem;
+    height: auto;
 }
 
 .resume-detail.about .resume-item p {
+    grid-column: 2;
     display: flex;
     flex-direction: column;
-    margin: 0;                  /* limpa margens inconsistentes */
+    margin: 0;
     line-height: 1.25;
     color: var(--main-color);
 }
