@@ -196,3 +196,90 @@ window.addEventListener('load', () => {
   const skillsActive = document.querySelector('.resume-detail.skills.active');
   if (skillsActive) animateSkills();
 });
+
+/* ===========================
+   CONTACT FORM: AJAX + TOAST
+=========================== */
+
+(function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  const btn = form.querySelector('button[type="submit"]');
+  const toastRoot = document.getElementById('toast-root');
+
+  function showToast({ title = 'Info', message = '', type = 'success', timeout = 4500 } = {}) {
+    const el = document.createElement('div');
+    el.className = `toast ${type}`;
+    el.innerHTML = `
+      <div class="content">
+        <div class="title">${title}</div>
+        <div class="msg">${message}</div>
+      </div>
+      <button class="close" aria-label="Fechar">&times;</button>
+    `;
+    toastRoot.appendChild(el);
+
+    const close = () => {
+      el.style.transition = 'opacity .15s ease';
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 180);
+    };
+    el.querySelector('.close').addEventListener('click', close);
+    if (timeout) setTimeout(close, timeout);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // evita múltiplos submits
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = 'A enviar…';
+
+    try {
+      // envia como application/x-www-form-urlencoded (compatível com express.urlencoded)
+      const fd = new FormData(form);
+      const body = new URLSearchParams(fd);
+
+      const res = await fetch('/contact', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body
+      });
+
+      let data = {};
+      try { data = await res.json(); } catch {}
+
+      if (res.ok && data.ok) {
+        showToast({
+          title: 'Mensagem enviada!',
+          message: 'Obrigado. Vou responder em breve.',
+          type: 'success'
+        });
+        form.reset();
+      } else if (res.status === 429) {
+        showToast({
+          title: 'Muitas tentativas',
+          message: 'Tente novamente daqui a alguns minutos.',
+          type: 'error'
+        });
+      } else {
+        showToast({
+          title: 'Falha no envio',
+          message: data?.error || 'Não foi possível enviar a mensagem.',
+          type: 'error'
+        });
+      }
+    } catch (err) {
+      showToast({
+        title: 'Erro de rede',
+        message: 'Verifique sua ligação à internet.',
+        type: 'error'
+      });
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  });
+})();
