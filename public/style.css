@@ -919,6 +919,57 @@ section.active {
     .contact-box h2 {
         font-size: 3.5rem;
     }
+    .resume-container { 
+        grid-template-columns: 1fr !important; 
+        gap: 3rem;
+    }
+
+    /* grid das skills em 1 coluna */
+    .skills-grid{ 
+        grid-template-columns: 1fr !important; 
+        gap: 3.2rem; }
+    .skills-col{ 
+        width:100%; 
+        padding: 0 .8rem; 
+    }
+
+    /* barras ocupam 100% da coluna, centradas */
+    .skill{ 
+        max-width: none; 
+        margin-left: 0; 
+        margin-right: 0; 
+    }
+    .bar2{ width: 100%; 
+        max-width: none; 
+    }
+
+    /* badge da % um pouco mais perto */
+    .progress::after{ 
+        top:-16px; right:-10px; 
+        font-size:1.1rem; 
+    }
+
+    /* círculos em 2 colunas e ligeiramente menores */
+    .circles{ 
+        grid-template-columns: repeat(2, minmax(110px, 1fr));
+        gap: 2.2rem 2.6rem; }
+    .circle{ 
+        --size: 120px; 
+    }
+    .circle p{ 
+        bottom:-2rem; 
+        font-size:1.4rem; 
+    }
+    .circles{ 
+        grid-template-columns: repeat(2, minmax(100px, 1fr));
+    }
+    .circle{ 
+        --size: 110px; 
+    }
+    .progress::after{ 
+    top:-14px; right:-8px; 
+    font-size:1rem; 
+    }
 }
 
 /* === TOAST (popup) === */
