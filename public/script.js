@@ -29,26 +29,16 @@ function showSection(section) {
   section.classList.add('active');
   navLinks.forEach(a => a.classList.remove('active'));
   const index = Array.from(sections).indexOf(section);
-  if (index >= 0) {
-    navLinks[index]?.classList.add('active');
-  }
+  if (index >= 0) navLinks[index]?.classList.add('active');
 }
 
-// cliques do menu
+// navegação do topo
 navLinks.forEach((link, index) => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
 
     let id = link.dataset.target || link.getAttribute('href')?.replace('#','');
-
-    let targetSection = null;
-    if (id) {
-      targetSection = document.getElementById(id);
-    }
-    // Se não tiver id, pega pela ordem do link
-    if (!targetSection) {
-      targetSection = sections[index] || null;
-    }
+    let targetSection = id ? document.getElementById(id) : sections[index] || null;
     if (!targetSection || link.classList.contains('active')) return;
 
     animateTransition();
@@ -67,7 +57,7 @@ logoLink?.addEventListener('click', (e) => {
 
 /* ----------------------------
    TABS: Experience / Education / Skills / About
-   (sem data-target, só pela ORDEM dos botões)
+   (pela ORDEM dos botões)
 ----------------------------- */
 const tabButtons = document.querySelectorAll(
   '.resume-container .resume-box:first-child .resume-btn'
@@ -83,90 +73,23 @@ function activateTabByIndex(i) {
   if (tabPanels[i]) tabPanels[i].classList.add('active');
 }
 
-// liga os cliques
-tabButtons.forEach((btn, i) => {
-  btn.addEventListener('click', () => activateTabByIndex(i));
-});
-
-// garante que, se por algum motivo nada estiver ativo, ativa a 1ª tab
-if (
-  tabButtons.length &&
-  tabPanels.length &&
-  !document.querySelector('.resume-btn.active') &&
-  !document.querySelector('.resume-detail.active')
-) {
-  activateTabByIndex(0);
-}
-
-// === PORTFÓLIO: sincronizar imagens e detalhes ===
-const arrowRight = document.querySelector('.portfolio-box .navigation .arrow-right');
-const arrowLeft  = document.querySelector('.portfolio-box .navigation .arrow-left');
-
-const imgSlide   = document.querySelector('.portfolio-mediamatiker .img-curriculum');
-const slides     = imgSlide ? imgSlide.querySelectorAll('.img-item') : [];
-const details    = document.querySelectorAll('.portfolio-container .portfolio-box:first-child .portfolio-detail');
-
-const total = Math.min(slides.length, details.length);
-
-let index = 0;
-
-function updateDetails() {
-  details.forEach(d => d.classList.remove('active'));
-  if (details[index]) details[index].classList.add('active');
-}
-
-function updateNavState() {
-  // desativa botão quando chega ao limite
-  arrowLeft?.classList.toggle('disabled', index === 0);
-  arrowRight?.classList.toggle('disabled', index === total - 1);
-}
-
-function activePortfolio() {
-  if (imgSlide) {
-    imgSlide.style.transform = `translateX(calc(${index * -100}% - ${index * 2}rem))`;
-  }
-  updateDetails();
-  updateNavState();
-}
-
-// direita → próximo
-arrowRight?.addEventListener('click', () => {
-  if (index < total - 1) {
-    index++;
-    activePortfolio();
-  }
-});
-
-// esquerda → anterior
-arrowLeft?.addEventListener('click', () => {
-  if (index > 0) {
-    index--;
-    activePortfolio();
-  }
-});
-
-// inicializa
-activePortfolio();
-
+// animação de skills (barras + círculos)
 function animateSkills() {
   const skillsSection = document.querySelector('.resume-detail.skills');
   if (!skillsSection) return;
 
-// Barras
   skillsSection.querySelectorAll('.progress').forEach(bar => {
     const val = parseInt(bar.getAttribute('data-value') || '0', 10);
-    bar.style.width = '0%';                     // reset
-    bar.setAttribute('data-label', val + '%');  // <<< texto do rótulo
-    void bar.offsetWidth;                       // reflow p/ transição
-    bar.style.width = val + '%';                // anima
+    bar.style.width = '0%';
+    bar.setAttribute('data-label', val + '%');
+    void bar.offsetWidth;
+    bar.style.width = val + '%';
   });
-  
 
-  // Círculos (anima variável --value 0->alvo)
   skillsSection.querySelectorAll('.circle').forEach(c => {
     const target = parseInt(c.getAttribute('data-value') || '0', 10);
     c.style.setProperty('--value', 0);
-    const duration = 1200; // ms
+    const duration = 1200;
     const start = performance.now();
 
     function tick(now){
@@ -179,17 +102,82 @@ function animateSkills() {
   });
 }
 
-// dispara quando clicar na aba "Skills"
-document.querySelectorAll('.resume-btn').forEach((btn, i) => {
+// um único listener para cada botão da tab:
+// ativa a tab, faz scroll dentro da secção .resume e, se for "Skills", anima
+tabButtons.forEach((btn, i) => {
   btn.addEventListener('click', () => {
-    const panels = document.querySelectorAll('.resume-detail');
-    const panel = panels[i];
+    activateTabByIndex(i);
+
+    const resumeSection = document.querySelector('section.resume');
+    const panel = tabPanels[i];
+
+    if (resumeSection && panel) {
+      const anchor =
+        panel.querySelector('.skills-title') ||
+        panel.querySelector('.heading') ||
+        panel;
+
+      // scroll SUAVE dentro da secção .resume (funciona no telemóvel)
+      resumeSection.scrollTo({
+        top: Math.max(anchor.offsetTop - 8, 0),
+        behavior: 'smooth'
+      });
+    }
+
     if (panel && panel.classList.contains('skills')) {
-      // pequeno atraso p/ permitir o toggle de classes/visibilidade
       setTimeout(animateSkills, 50);
     }
   });
 });
+
+// garante uma tab ativa ao carregar
+if (
+  tabButtons.length &&
+  tabPanels.length &&
+  !document.querySelector('.resume-btn.active') &&
+  !document.querySelector('.resume-detail.active')
+) {
+  activateTabByIndex(0);
+}
+
+/* === PORTFÓLIO: sincronizar imagens e detalhes === */
+const arrowRight = document.querySelector('.portfolio-box .navigation .arrow-right');
+const arrowLeft  = document.querySelector('.portfolio-box .navigation .arrow-left');
+
+const imgSlide   = document.querySelector('.portfolio-mediamatiker .img-curriculum');
+const slides     = imgSlide ? imgSlide.querySelectorAll('.img-item') : [];
+const details    = document.querySelectorAll('.portfolio-container .portfolio-box:first-child .portfolio-detail');
+
+const total = Math.min(slides.length, details.length);
+let index = 0;
+
+function updateDetails() {
+  details.forEach(d => d.classList.remove('active'));
+  if (details[index]) details[index].classList.add('active');
+}
+
+function updateNavState() {
+  arrowLeft?.classList.toggle('disabled', index === 0);
+  arrowRight?.classList.toggle('disabled', index === total - 1);
+}
+
+function activePortfolio() {
+  if (imgSlide) {
+    imgSlide.style.transform = `translateX(calc(${index * -100}% - ${index * 2}rem))`;
+  }
+  updateDetails();
+  updateNavState();
+}
+
+arrowRight?.addEventListener('click', () => {
+  if (index < total - 1) { index++; activePortfolio(); }
+});
+
+arrowLeft?.addEventListener('click', () => {
+  if (index > 0) { index--; activePortfolio(); }
+});
+
+activePortfolio();
 
 // se ao recarregar a página a aba Skills já estiver ativa, anima
 window.addEventListener('load', () => {
@@ -200,7 +188,6 @@ window.addEventListener('load', () => {
 /* ===========================
    CONTACT FORM: AJAX + TOAST
 =========================== */
-
 (function () {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -232,13 +219,11 @@ window.addEventListener('load', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // evita múltiplos submits
     btn.disabled = true;
     const original = btn.textContent;
     btn.textContent = 'Wird gesendet..';
 
     try {
-      // envia como application/x-www-form-urlencoded (compatível com express.urlencoded)
       const fd = new FormData(form);
       const body = new URLSearchParams(fd);
 
@@ -271,7 +256,7 @@ window.addEventListener('load', () => {
           type: 'error'
         });
       }
-    } catch (err) {
+    } catch {
       showToast({
         title: 'Netzwerkfehler',
         message: 'Bitte überprüfen Sie Ihre Internetverbindung.',
