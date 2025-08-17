@@ -253,28 +253,28 @@ window.addEventListener('load', () => {
 
       if (res.ok && data.ok) {
         showToast({
-          title: 'Mensagem enviada!',
-          message: 'Obrigado. Vou responder em breve.',
+          title: 'Nachricht gesendet!',
+          message: 'Vielen Dank. Werde bald antworten!',
           type: 'success'
         });
         form.reset();
       } else if (res.status === 429) {
         showToast({
-          title: 'Muitas tentativas',
-          message: 'Tente novamente daqui a alguns minutos.',
+          title: 'Zu vielen versuchen!',
+          message: 'Versuch später nochmal.',
           type: 'error'
         });
       } else {
         showToast({
-          title: 'Falha no envio',
-          message: data?.error || 'Não foi possível enviar a mensagem.',
+          title: 'Einen Error ist aufgetreten!',
+          message: data?.error || 'Nachricht nicht gesendet.',
           type: 'error'
         });
       }
     } catch (err) {
       showToast({
-        title: 'Erro de rede',
-        message: 'Verifique sua ligação à internet.',
+        title: 'Netzwerkfehler',
+        message: 'Bitte überprüfen Sie Ihre Internetverbindung.',
         type: 'error'
       });
     } finally {
