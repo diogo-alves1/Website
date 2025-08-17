@@ -336,7 +336,7 @@ section.active {
     font-size: 1.6rem;
     color: var(--white-color);
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: 3.5rem;
     border-radius: .8rem;
     cursor: pointer;
 }
@@ -420,6 +420,10 @@ section.active {
     overflow: visible;
 }
 
+.resume-detail.skills .heading {
+    margin-bottom: 5rem;   
+}
+
 .resume-detail.skills .resume-item {
     position: relative;
     align-items: center;
@@ -453,6 +457,142 @@ section.active {
     top: -25%;
     opacity: 1;
     transform: scale(1);
+}
+
+/* ===== LAYOUT SKILLS ===== */
+.skills-grid { 
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 5rem; /* espaço entre colunas */ 
+    align-items: start; 
+} 
+.skills-col { 
+    width:100%;
+    align-items:center;
+    
+} 
+.skills-title { 
+    font-size:2.6rem; 
+    text-align:center; 
+    margin-bottom:2.5rem; 
+    text-decoration:underline; 
+    text-underline-offset:.45rem; 
+} 
+/* barras horizontais */ 
+.skill {
+  margin: 2.2rem 0;
+  position: relative;
+  max-width: 600px;        /* largura total da skill */
+  margin-left: auto;       /* centraliza horizontalmente */
+  margin-right: auto;
+}
+
+.skill span {
+  display: block;          /* força ficar sozinho em uma linha */
+  text-align: left;        /* garante alinhamento à esquerda */
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.6rem;   /* espaço entre texto e barra */
+}
+
+.skill span i {
+  font-size: 1.8rem;
+  margin-right: 0.6rem;
+  vertical-align: middle;
+}
+
+.bar2 {
+  position: relative;
+  width: 600px;               /* comprimento da barra */
+  max-width: 100%;
+  background: #0b0f14;
+  height: .9rem;
+  border-radius: 1rem;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+
+  margin: 0 auto;             /* <<< centraliza horizontalmente */
+}
+
+.progress{
+  height:100%;
+  width:0%;
+  background: var(--main-color);
+  border-radius: 1rem;
+  transition: width 1.2s ease;
+  position: relative; /* referência do ::after */
+}
+
+/* “pill” com a percentagem colada ao fim da barra */
+.progress::after{
+  content: attr(data-label);      /* ex.: 90% */
+  position: absolute;
+  right: -12px;                   /* sai um pouco para fora */
+  top: -18px;                     /* por cima da barra */
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  background: #0e141b;            /* tom escuro (pode usar var(--bg-color)) */
+  padding: 2px 6px;
+  border-radius: .4rem;
+  box-shadow: 0 1px 0 rgba(0,0,0,.4);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* percentagem ao lado da barra */
+.skill .percent {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* círculos */
+.circles{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap:3.2rem 4rem;              /* espaço entre círculos */
+  justify-items:center;
+}
+.circle{
+  --size:140px;
+  --track:#0b0f14;
+  --accent: var(--main-color);
+  --value: 0;                   /* 0..100 - animada via JS */
+  width:var(--size);
+  height:var(--size);
+  border-radius:50%;
+  background: conic-gradient(var(--accent) calc(var(--value) * 1%), var(--track) 0);
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 0 0 6px var(--bg-color), 0 0 0 7px rgba(255,255,255,.06);
+}
+.circle::before{
+  content:"";
+  position:absolute; inset:12px;
+  background: var(--bg-color);
+  border-radius:50%;
+}
+.circle span{
+  position:relative;
+  z-index:1;
+  font-weight:800;
+  font-size:2rem;
+}
+.circle p{
+  position:absolute;
+  bottom:-2.4rem;
+  font-size:1.5rem;
+  text-align:center;
+}
+
+/* responsivo */
+@media (max-width: 900px){
+  .skills-grid{ grid-template-columns:1fr; gap:3rem; }
 }
 
 .resume-detail.about {
@@ -561,7 +701,7 @@ section.active {
     color: var(--disabled-color);
 }
 
-.portfolio-box .navigation .arrow.right {
+.portfolio-box .navigation .arrow-right {
     margin-left: 1.5rem;
 }
 

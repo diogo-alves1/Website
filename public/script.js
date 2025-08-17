@@ -97,3 +97,102 @@ if (
 ) {
   activateTabByIndex(0);
 }
+
+// === PORTFÓLIO: sincronizar imagens e detalhes ===
+const arrowRight = document.querySelector('.portfolio-box .navigation .arrow-right');
+const arrowLeft  = document.querySelector('.portfolio-box .navigation .arrow-left');
+
+const imgSlide   = document.querySelector('.portfolio-mediamatiker .img-curriculum');
+const slides     = imgSlide ? imgSlide.querySelectorAll('.img-item') : [];
+const details    = document.querySelectorAll('.portfolio-container .portfolio-box:first-child .portfolio-detail');
+
+const total = Math.min(slides.length, details.length);
+
+let index = 0;
+
+function updateDetails() {
+  details.forEach(d => d.classList.remove('active'));
+  if (details[index]) details[index].classList.add('active');
+}
+
+function updateNavState() {
+  // desativa botão quando chega ao limite
+  arrowLeft?.classList.toggle('disabled', index === 0);
+  arrowRight?.classList.toggle('disabled', index === total - 1);
+}
+
+function activePortfolio() {
+  if (imgSlide) {
+    imgSlide.style.transform = `translateX(calc(${index * -100}% - ${index * 2}rem))`;
+  }
+  updateDetails();
+  updateNavState();
+}
+
+// direita → próximo
+arrowRight?.addEventListener('click', () => {
+  if (index < total - 1) {
+    index++;
+    activePortfolio();
+  }
+});
+
+// esquerda → anterior
+arrowLeft?.addEventListener('click', () => {
+  if (index > 0) {
+    index--;
+    activePortfolio();
+  }
+});
+
+// inicializa
+activePortfolio();
+
+function animateSkills() {
+  const skillsSection = document.querySelector('.resume-detail.skills');
+  if (!skillsSection) return;
+
+// Barras
+  skillsSection.querySelectorAll('.progress').forEach(bar => {
+    const val = parseInt(bar.getAttribute('data-value') || '0', 10);
+    bar.style.width = '0%';                     // reset
+    bar.setAttribute('data-label', val + '%');  // <<< texto do rótulo
+    void bar.offsetWidth;                       // reflow p/ transição
+    bar.style.width = val + '%';                // anima
+  });
+  
+
+  // Círculos (anima variável --value 0->alvo)
+  skillsSection.querySelectorAll('.circle').forEach(c => {
+    const target = parseInt(c.getAttribute('data-value') || '0', 10);
+    c.style.setProperty('--value', 0);
+    const duration = 1200; // ms
+    const start = performance.now();
+
+    function tick(now){
+      const t = Math.min((now - start)/duration, 1);
+      const current = Math.round(target * t);
+      c.style.setProperty('--value', current);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// dispara quando clicar na aba "Skills"
+document.querySelectorAll('.resume-btn').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    const panels = document.querySelectorAll('.resume-detail');
+    const panel = panels[i];
+    if (panel && panel.classList.contains('skills')) {
+      // pequeno atraso p/ permitir o toggle de classes/visibilidade
+      setTimeout(animateSkills, 50);
+    }
+  });
+});
+
+// se ao recarregar a página a aba Skills já estiver ativa, anima
+window.addEventListener('load', () => {
+  const skillsActive = document.querySelector('.resume-detail.skills.active');
+  if (skillsActive) animateSkills();
+});
