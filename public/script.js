@@ -186,7 +186,7 @@ window.addEventListener('load', () => {
 });
 
 /* ===========================
-   CONTACT FORM: AJAX + TOAST
+CONTACT FORM
 =========================== */
 (function () {
   const form = document.getElementById('contact-form');
