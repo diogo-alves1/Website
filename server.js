@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota para forçar download do PDF
 app.get('/download/cv', (req, res) => {
-  const filePath = path.join(__dirname, 'public', 'Lebenslauf.pdf'); // <— aqui!
+  const filePath = path.join(__dirname, 'public', 'Lebenlauf.pdf'); // <— aqui!
   res.download(filePath, 'Diogo-Alves-CV.pdf', (err) => {
     if (err) {
       console.error('Fehler beim Senden der PDF:', err);
