@@ -126,8 +126,8 @@ section {
 }
 
 section.active {
-    animation: show-content 1.5s linear forwards;
-    animation-delay: 1.6s;
+    animation: show-content 1.2s linear forwards;
+    animation-delay: 1.2s;
 }
 
 @keyframes show-content {
