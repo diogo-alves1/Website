@@ -102,7 +102,7 @@ nav a.active {
 }
 
 .bars-box.active .bar {
-    animation: show-bars .5s ease-in-out both;
+    animation: show-bars .3s ease-in-out both;
     animation-delay: calc(.1s * var(--i));
 }
 
